@@ -1,58 +1,3 @@
-const data1 = [
-  198013.1166,
-  195576.008,
-  194854.174,
-  194612.3125,
-  194345.6097,
-  195347.0262,
-  199780.7394,
-  203299.4482,
-  202602.551,
-  204808.5569,
-  210928.4814,
-  219409.0808,
-  229900.0578,
-  241619.1448,
-  249231.508,
-  251777.5071,
-  246737.1191,
-  237575.9224,
-  228844.8811,
-  220434.1094,
-  211096.0878,
-  197653.3316,
-  194507.6225,
-  191393.7822,
-  ]
-  
-  const data2 = [
-  621553.7241,
-  614869.2351,
-  612385.1144,
-  610626.9591,
-  609125.2764,
-  609978.6737,
-  611220.5836,
-  614406.9775,
-  627561.5039,
-  635711.4112,
-  639188.1738,
-  643244.9572,
-  648364.1577,
-  649617.8345,
-  650349.029,
-  654043.6462,
-  653413.0523,
-  653101.2136,
-  648087.8921,
-  644024.2246,
-  638875.9354,
-  627877.3752,
-  611139.1794,
-  601504.6244,
-  ]
-
-const dataset = [data1, data2];
 const flowers = [];
 let cScale;
 const data_2022 = {};
@@ -143,7 +88,6 @@ class Flower {
     let totalPop = this.data[0][0] + this.data[0][1];
     let prevEdgeX = this.x + rScale(totalPop * Math.cos(- Math.PI/2));
     let prevEdgeY = this.y + rScale(totalPop * Math.sin(- Math.PI/2));
-    console.log([...this.data, this.data[0]]);
     [...this.data, this.data[0]].forEach((d, i) => {
       const angle = ((2 * Math.PI) / 24) * i - Math.PI/2;
       totalPop = d[0] + d[1];
@@ -158,24 +102,23 @@ class Flower {
     this.data.forEach((d, i) => {
       const angle = ((2 * Math.PI) / 24) * i - Math.PI/2;
       push();
-      noStroke();
-      translate(this.x, this.y);
-      rotate(angle);
-      const scaledPop = rScale(d[0] + d[1]);
-      const mRatio = d[0] / (d[0] + d[1]);
-      console.log(scaledPop);
-      fill('#424242');
-      drawLine(0, 0, scaledPop, 0);
-      fill(cScale(mRatio));
-      if([0,4,8,12,16,20].includes(i)){
-      for(let h=1; h<=scaledPop/6; h+=scaledPop/24){
-        drawPetal(scaledPop,h);
-      };
-      for(let h=1; h<=scaledPop/6; h+=scaledPop/24){
-        drawPetal(scaledPop,-h);
-      };
-     }
-     drawPoint(scaledPop,0, 3);
+        noStroke();
+        translate(this.x, this.y);
+        rotate(angle);
+        const scaledPop = rScale(d[0] + d[1]);
+        const mRatio = d[0] / (d[0] + d[1]);
+        fill('#424242');
+        drawLine(0, 0, scaledPop, 0);
+        fill(cScale(mRatio));
+        if([0,4,8,12,16,20].includes(i)){
+        for(let h=1; h<=scaledPop/6; h+=scaledPop/24){
+          drawPetal(scaledPop,h);
+        };
+        for(let h=1; h<=scaledPop/6; h+=scaledPop/24){
+          drawPetal(scaledPop,-h);
+        };
+        }
+        drawPoint(scaledPop,0, 3);
       pop();
     });
   }
