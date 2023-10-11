@@ -52,7 +52,6 @@ function draw() {
     f.drawEdge();
     f.drawCenter();
   }
-  save('test.png');
 }
 
 function rScale(d) {
@@ -144,12 +143,4 @@ function drawPetal(endX, height) {
     const yPos = height * Math.sin(((Math.PI * 1) / endX) * i);
     drawPoint(i, yPos, 1);
   }
-}
-
-function drawBee(flower1, flower2) {
-  const [x1, y1] = [flower1.x, flower1.y];
-  const [x2, y2] = [flower2.x, flower2.y];
-
-  stroke(255);
-  line(x1, y1, x2, y2);
 }
