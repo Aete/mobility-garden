@@ -2,10 +2,7 @@ const flowers = [];
 let cScale;
 const data_2022 = {};
 
-function setup() {
-  // 캔버스 생성
-  createCanvas(4200, 10000);
-
+function preload() {
   // 데이터 기반의 객체 하나 만들기
   d3.csv('./data/2022_monthly.csv').then((csv) => {
     // get unique region codes
@@ -39,6 +36,11 @@ function setup() {
       }
     }
   });
+}
+
+function setup() {
+  // 캔버스 생성
+  createCanvas(4200, 10000);
   cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
   pixelDensity(2);
 }
@@ -55,7 +57,7 @@ function draw() {
 }
 
 function rScale(d) {
-  return Math.sqrt(d) * 0.1;
+  return d * 0.00015;
 }
 
 function drawPoint(x, y, r) {
@@ -65,6 +67,17 @@ function drawPoint(x, y, r) {
 // 두 개의 좌표 사이에 점을 계속해서 찍어 나가는 함수
 function drawLine(x1, y1, x2, y2) {
   line(x1, y1, x2, y2);
+}
+
+function polygon(x, y, radius, npoints) {
+  let angle = TWO_PI / npoints;
+  beginShape();
+  for (let a = 0; a < TWO_PI; a += angle) {
+    let sx = x + cos(a + (3 / 4) * TWO_PI) * radius;
+    let sy = y + sin(a + (3 / 4) * TWO_PI) * radius;
+    vertex(sx, sy);
+  }
+  endShape(CLOSE);
 }
 
 class Flower {
@@ -82,8 +95,18 @@ class Flower {
     const maleAvg =
       this.data.map((d) => d[0]).reduce((d, acc) => d + acc, 0) / 24;
     this.color = cScale(maleAvg / (femaleAvg + maleAvg));
-    fill(this.color);
-    drawPoint(this.x, this.y, 20);
+    fill('#000');
+    ellipse(this.x, this.y, 25);
+    fill('#fff');
+    const randValue = Math.random();
+    if (randValue > 0.7) {
+      polygon(this.x, this.y, 10, 4);
+    }
+    if (randValue <= 0.7 && randValue > 0.3) {
+      polygon(this.x, this.y, 10, 4);
+    } else {
+      ellipse(this.x, this.y, 20);
+    }
   }
 
   drawGrid() {
@@ -92,11 +115,12 @@ class Flower {
     noFill();
     ellipse(this.x, this.y, rScale(1000000));
     ellipse(this.x, this.y, rScale(500000));
+    stroke('#424242');
   }
 
   drawEdge() {
     // edge of the circle
-    stroke('#fff');
+    stroke('#ccc');
     drawingContext.setLineDash([]);
     noFill();
     let totalPop = this.data[0][0] + this.data[0][1];
@@ -132,15 +156,17 @@ class Flower {
           drawPetal(scaledPop, -h);
         }
       }
-      drawPoint(scaledPop, 0, 5);
+      drawPoint(scaledPop, 0, 4);
       pop();
     });
   }
 }
 
 function drawPetal(endX, height) {
+  beginShape();
   for (let i = 0; i < endX; i++) {
     const yPos = height * Math.sin(((Math.PI * 1) / endX) * i);
-    drawPoint(i, yPos, 1);
+    vertex(i, yPos);
   }
+  endShape();
 }
