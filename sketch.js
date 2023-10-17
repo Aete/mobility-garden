@@ -88,7 +88,7 @@ class Flower {
     this.color = 'fff';
   }
 
-  drawCenter() {
+  drawCenter(){
     noStroke();
     const femaleAvg =
       this.data.map((d) => d[1]).reduce((d, acc) => d + acc, 0) / 24;
@@ -148,13 +148,10 @@ class Flower {
       fill('#424242');
       drawLine(0, 0, scaledPop, 0);
       fill(cScale(mRatio));
-      if ([0, 4, 8, 12, 16, 20].includes(i)) {
-        for (let h = 1; h <= scaledPop / 6; h += scaledPop / 48) {
-          drawPetal(scaledPop, h);
-        }
-        for (let h = 1; h <= scaledPop / 6; h += scaledPop / 48) {
-          drawPetal(scaledPop, -h);
-        }
+      stroke(cScale(mRatio))
+      if ([4, 9, 12, 15, 19, 23].includes(i)) {
+        drawPetal(scaledPop, 5);
+        drawPetal(scaledPop, -5);
       }
       drawPoint(scaledPop, 0, 4);
       pop();
