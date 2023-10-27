@@ -25,11 +25,11 @@ function preload() {
         data_2022[c][m] = monthlyPop;
       }
     }
-    for (let i = 0; i < uniqueCode.length; i++) {
-      for (let m = 1; m < 13; m++) {
+    for (let m = 1; m < 13; m++) {
+      for (let i = 0; i < uniqueCode.length; i++) {
         const flower = new Flower(
-          0 + m * 200,
-          100 + i * 300,
+          100 + (i % 5) * 200,
+          100 + Math.floor(i / 5) * 200,
           data_2022[uniqueCode[i]][m]
         );
         flowers.push(flower);
@@ -40,18 +40,21 @@ function preload() {
 
 function setup() {
   // 캔버스 생성
-  createCanvas(2600, 7500);
+  createCanvas(1000, 1100);
   cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
 }
 
 function draw() {
-  background('#000');
   noLoop();
   noStroke();
-  for (const f of flowers) {
-    f.drawGrid();
-    f.drawEdge();
-    f.drawCenter();
+
+  for (let i = 0; i < 300; i = i + 25) {
+    background('#000');
+    for (const f of flowers.slice(0 + i, i + 25)) {
+      f.drawGrid();
+      f.drawEdge();
+      f.drawCenter();
+    }
   }
 }
 
