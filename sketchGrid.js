@@ -1,6 +1,34 @@
 const flowers = [];
 let cScale;
 const data_2022 = {};
+let notoFont;
+const guCode = [
+  { code: 11110, nameKR: 'Jongno-gu' },
+  { code: 11140, nameKR: 'Jung-gu' },
+  { code: 11170, nameKR: 'Yongsan-gu' },
+  { code: 11200, nameKR: 'Seongdong-gu' },
+  { code: 11215, nameKR: 'Gwangjin-gu' },
+  { code: 11230, nameKR: 'Dongdaemun-gu' },
+  { code: 11260, nameKR: 'Jungnang-gu' },
+  { code: 11290, nameKR: 'Seongbuk-gu' },
+  { code: 11305, nameKR: 'Gangbuk-gu' },
+  { code: 11320, nameKR: 'Dobong-gu' },
+  { code: 11350, nameKR: 'Nowon-gu' },
+  { code: 11380, nameKR: 'Eunpyeong-gu' },
+  { code: 11410, nameKR: 'Seodaemun-gu' },
+  { code: 11440, nameKR: 'Mapo-gu' },
+  { code: 11470, nameKR: 'Yangcheon-gu' },
+  { code: 11500, nameKR: 'Gangseo-gu' },
+  { code: 11530, nameKR: 'Guro-gu' },
+  { code: 11545, nameKR: 'Geumcheon-gu' },
+  { code: 11560, nameKR: 'Yeongdeungpo-gu' },
+  { code: 11590, nameKR: 'Dongjak-gu' },
+  { code: 11620, nameKR: 'Gwanak-gu' },
+  { code: 11650, nameKR: 'Seocho-gu' },
+  { code: 11680, nameKR: 'Gangnam-gu' },
+  { code: 11740, nameKR: 'Gangdong-gu' },
+  { code: 11710, nameKR: 'Songpa-gu' },
+];
 
 function preload() {
   // 데이터 기반의 객체 하나 만들기
@@ -28,9 +56,12 @@ function preload() {
     for (let m = 1; m < 13; m++) {
       for (let i = 0; i < uniqueCode.length; i++) {
         const flower = new Flower(
-          100 + (i % 5) * 200,
-          100 + Math.floor(i / 5) * 200,
-          data_2022[uniqueCode[i]][m]
+          100 + (i % 5) * 150,
+          100 + Math.floor(i / 5) * 150,
+          data_2022[uniqueCode[i]][m],
+          guCode.filter((d) => d['code'] === parseInt(uniqueCode[i]))[0][
+            'nameKR'
+          ]
         );
         flowers.push(flower);
       }
@@ -40,8 +71,10 @@ function preload() {
 
 function setup() {
   // 캔버스 생성
-  createCanvas(1000, 1100);
+  createCanvas(800, 920);
   cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
+  textFont('Noto Serif');
+  textAlign(CENTER);
 }
 
 function draw() {
@@ -54,40 +87,25 @@ function draw() {
       f.drawGrid();
       f.drawEdge();
       f.drawCenter();
+      f.drawText();
     }
   }
+  fill('#ccc');
+  textSize(30);
+  text('Seoul, 2022', 400, 880);
 }
 
 function rScale(d) {
-  return d * 0.00015;
-}
-
-function drawPoint(x, y, r) {
-  ellipse(x, y, r);
-}
-
-// 두 개의 좌표 사이에 점을 계속해서 찍어 나가는 함수
-function drawLine(x1, y1, x2, y2) {
-  line(x1, y1, x2, y2);
-}
-
-function polygon(x, y, radius, npoints) {
-  let angle = TWO_PI / npoints;
-  beginShape();
-  for (let a = 0; a < TWO_PI; a += angle) {
-    let sx = x + cos(a + (3 / 4) * TWO_PI) * radius;
-    let sy = y + sin(a + (3 / 4) * TWO_PI) * radius;
-    vertex(sx, sy);
-  }
-  endShape(CLOSE);
+  return d * 0.00008;
 }
 
 class Flower {
-  constructor(x, y, data) {
+  constructor(x, y, data, gu) {
     this.x = x;
     this.y = y;
     this.data = data;
     this.color = 'fff';
+    this.gu = gu;
   }
 
   drawCenter() {
@@ -100,10 +118,8 @@ class Flower {
     stroke('#636363');
     drawingContext.setLineDash([3, 3]);
     noFill();
-    ellipse(this.x, this.y, rScale(1000000));
-    ellipse(this.x, this.y, rScale(500000));
-    ellipse(this.x, this.y, rScale(250000));
-    ellipse(this.x, this.y, rScale(750000));
+    ellipse(this.x, this.y, rScale(500000) * 2);
+    ellipse(this.x, this.y, rScale(250000) * 2);
   }
 
   drawEdge() {
@@ -139,9 +155,19 @@ class Flower {
       if ([0, 4, 9, 15, 20].includes(i)) {
         drawPetal(scaledPop, scaledPop * 0.125);
       }
-      drawPoint(scaledPop, 0, 4);
+      ellipse(scaledPop, 0, 4);
       pop();
     });
+  }
+
+  drawText() {
+    fill('#ccc');
+    const maxPop = Math.max(...this.data.map((d) => d[0] + d[1]));
+    if (maxPop > 500000) {
+      text(this.gu, this.x, this.y + rScale(maxPop) + 20);
+    } else {
+      text(this.gu, this.x, this.y + rScale(500000) + 20);
+    }
   }
 }
 
