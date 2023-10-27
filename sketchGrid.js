@@ -73,12 +73,11 @@ function setup() {
   // 캔버스 생성
   createCanvas(800, 920);
   cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
-  textFont('Noto Serif');
   textAlign(CENTER);
 }
 
 function draw() {
-  noLoop();
+  textFont('Noto Serif');
   noStroke();
 
   for (let i = 0; i < 300; i = i + 25) {
@@ -162,6 +161,7 @@ class Flower {
 
   drawText() {
     fill('#ccc');
+    textSize(13);
     const maxPop = Math.max(...this.data.map((d) => d[0] + d[1]));
     if (maxPop > 500000) {
       text(this.gu, this.x, this.y + rScale(maxPop) + 20);
