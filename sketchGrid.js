@@ -160,7 +160,7 @@ class Flower {
   }
 
   drawText() {
-    fill('#ccc');
+    fill('#aaa');
     textSize(13);
     const maxPop = Math.max(...this.data.map((d) => d[0] + d[1]));
     if (maxPop > 500000) {
