@@ -28,8 +28,8 @@ function preload() {
     for (let i = 0; i < uniqueCode.length; i++) {
       for (let m = 1; m < 13; m++) {
         const flower = new Flower(
-          0 + m * 200,
-          100 + i * 300,
+          0 + m * 180,
+          100 + i * 220,
           data_2022[uniqueCode[i]][m]
         );
         flowers.push(flower);
@@ -42,6 +42,7 @@ function setup() {
   // 캔버스 생성
   createCanvas(2600, 7500);
   cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
+  pixelDensity(2);
 }
 
 function draw() {
@@ -56,7 +57,7 @@ function draw() {
 }
 
 function rScale(d) {
-  return d * 0.00015;
+  return d * 0.0001;
 }
 
 function drawPoint(x, y, r) {
