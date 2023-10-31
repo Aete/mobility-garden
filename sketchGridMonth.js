@@ -96,15 +96,15 @@ function setup() {
 function draw() {
   textFont('Noto Serif');
   noStroke();
-
-  for (let i = 0; i < 300; i = i + 12) {
-    background('#000');
-    for (const f of flowers.slice(0 + i, i + 12)) {
-      f.drawGrid();
-      f.drawEdge();
-      f.drawCenter();
-      f.drawText();
-    }
+  noLoop();
+  const index = Math.floor(Math.random() * 25);
+  console.log(index);
+  background('#000');
+  for (const f of flowers.slice(0 + index*12, index*12 + 12)) {
+    f.drawGrid();
+    f.drawEdge();
+    f.drawCenter();
+    f.drawText();
   }
 }
 
