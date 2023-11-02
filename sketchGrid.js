@@ -1,7 +1,10 @@
-const flowers = [];
+const flowers = {};
 let cScale;
 const data_2022 = {};
 let notoFont;
+const windowWidth = 900;
+const windowHeight = 900;
+let month = 1;
 const guCode = [
   { code: 11110, nameKR: 'Jongno-gu' },
   { code: 11140, nameKR: 'Jung-gu' },
@@ -30,18 +33,31 @@ const guCode = [
   { code: 11710, nameKR: 'Songpa-gu' },
 ];
 
+const monthArray = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'June',
+  'July',
+  'Aug',
+  'Sept',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+const uniqueCode = guCode.map((d) => d.code);
+
 function preload() {
   // 데이터 기반의 객체 하나 만들기
   d3.csv('./data/2022_monthly.csv').then((csv) => {
-    // get unique region codes
-    const uniqueCode = csv
-      .map((row) => row['자치구코드'])
-      .filter((v, i, a) => a.indexOf(v) === i);
     const uniqueMonth = csv
       .map((row) => row['month'])
       .filter((v, i, a) => a.indexOf(v) === i);
     for (const c of uniqueCode) {
-      const regionData = csv.filter((row) => row['자치구코드'] === c);
+      const regionData = csv.filter((row) => parseInt(row['자치구코드']) === c);
       data_2022[c] = {};
       for (const m of uniqueMonth) {
         const monthlyData = regionData.filter((row) => row['month'] === m);
@@ -54,16 +70,17 @@ function preload() {
       }
     }
     for (let m = 1; m < 13; m++) {
+      flowers[m] = {};
       for (let i = 0; i < uniqueCode.length; i++) {
         const flower = new Flower(
-          100 + (i % 5) * 150,
+          120 + (i % 5) * 160,
           100 + Math.floor(i / 5) * 150,
           data_2022[uniqueCode[i]][m],
           guCode.filter((d) => d['code'] === parseInt(uniqueCode[i]))[0][
             'nameKR'
           ]
         );
-        flowers.push(flower);
+        flowers[m][uniqueCode[i]] = flower;
       }
     }
   });
@@ -71,27 +88,31 @@ function preload() {
 
 function setup() {
   // 캔버스 생성
-  createCanvas(800, 920);
+  createCanvas(windowWidth, windowHeight);
   cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
   textAlign(CENTER);
+  frameRate(1.5);
 }
 
 function draw() {
-  textFont('Noto Serif');
+  textFont('Lato');
+  background('#000');
   noStroke();
-
-  for (let i = 0; i < 300; i = i + 25) {
-    background('#000');
-    for (const f of flowers.slice(0 + i, i + 25)) {
-      f.drawGrid();
-      f.drawEdge();
-      f.drawCenter();
-      f.drawText();
-    }
+  for (const c of uniqueCode) {
+    const flower = flowers[month][c];
+    flower.drawGrid();
+    flower.drawEdge();
+    flower.drawCenter();
+    flower.drawText();
   }
   fill('#ccc');
-  textSize(30);
-  text('Seoul, 2022', 400, 880);
+  textSize(25);
+  text(
+    `Seoul, ${monthArray[month - 1]} 2022`,
+    windowWidth / 2,
+    windowHeight - 40
+  );
+  month = month === 12 ? 1 : month + 1;
 }
 
 function rScale(d) {
