@@ -1,38 +1,54 @@
 const flowers = [];
 let cScale;
-const data_2022 = {};
+const data = {};
+const uniqueYear = ['2019', '2020'];
+let uniqueMonth;
+
+const xSpace = 200;
+const ySpace = 270;
 
 function preload() {
   // 데이터 기반의 객체 하나 만들기
-  d3.csv('./data/2022_monthly.csv').then((csv) => {
+  d3.csv('./data/living_pop.csv').then((csv) => {
     // get unique region codes
     const uniqueCode = csv
       .map((row) => row['자치구코드'])
       .filter((v, i, a) => a.indexOf(v) === i);
-    const uniqueMonth = csv
+    uniqueMonth = csv
       .map((row) => row['month'])
       .filter((v, i, a) => a.indexOf(v) === i);
     for (const c of uniqueCode) {
       const regionData = csv.filter((row) => row['자치구코드'] === c);
-      data_2022[c] = {};
-      for (const m of uniqueMonth) {
-        const monthlyData = regionData.filter((row) => row['month'] === m);
-        const monthlyPop = monthlyData.map((d) => {
-          const { male_pop, female_pop } = d;
-          const popData = [male_pop, female_pop];
-          return popData.map((pop) => parseInt(pop));
-        });
-        data_2022[c][m] = monthlyPop;
+      data[c] = {};
+      for (const y of uniqueYear) {
+        data[c][y] = {};
+        const annualData = regionData.filter((row) => row['year'] === y);
+        for (const m of uniqueMonth) {
+          const monthlyData = annualData.filter((row) => row['month'] === m);
+          const sortedData = monthlyData.sort(
+            (a, b) => parseInt(a['시간대구분']) - parseInt(b['시간대구분'])
+          );
+
+          const monthlyPop = sortedData.map((d) => {
+            const { male_pop, female_pop } = d;
+            const popData = [male_pop, female_pop];
+            return popData.map((pop) => parseInt(pop));
+          });
+          data[c][y][m] = monthlyPop;
+        }
       }
     }
+    console.log(data);
     for (let i = 0; i < uniqueCode.length; i++) {
-      for (let m = 1; m < 13; m++) {
-        const flower = new Flower(
-          0 + m * 180,
-          100 + i * 220,
-          data_2022[uniqueCode[i]][m]
-        );
-        flowers.push(flower);
+      for (let a = 0; a < 2; a++) {
+        for (let m = 1; m < 13; m++) {
+          const flower = new Flower(
+            m * xSpace + a * xSpace * 12,
+            300 + i * ySpace,
+            data[uniqueCode[i]][uniqueYear[a]][m]
+          );
+          flowers.push(flower);
+        }
       }
     }
   });
@@ -40,13 +56,16 @@ function preload() {
 
 function setup() {
   // 캔버스 생성
-  createCanvas(2600, 7500);
+  createCanvas(5000, 7000);
   cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
-  pixelDensity(2);
+  pixelDensity(1);
+  textAlign(CENTER);
 }
 
 function draw() {
   background('#000');
+
+  createMonthGrid();
   noLoop();
   noStroke();
   for (const f of flowers) {
@@ -54,6 +73,26 @@ function draw() {
     f.drawEdge();
     f.drawCenter();
   }
+}
+
+function createMonthGrid() {
+  for (let a = 0; a < 2; a++) {
+    for (let m = 1; m < 13; m++) {
+      const xPos = m * xSpace + a * xSpace * 12;
+      stroke('#333');
+      drawLine(xPos, 150, xPos, 6900);
+      noStroke();
+      fill('#aaa');
+      textSize(25);
+      text(`${uniqueYear[a]}.${m > 9 ? m : '0' + m}`, xPos, 120);
+    }
+  }
+}
+
+function createGuGrid(index) {
+  const yPos = month * 180;
+  stroke('#424242');
+  drawLine(100, yPos, 2600, yPos);
 }
 
 function rScale(d) {
@@ -98,10 +137,8 @@ class Flower {
     stroke('#636363');
     drawingContext.setLineDash([3, 3]);
     noFill();
-    ellipse(this.x, this.y, rScale(1000000));
-    ellipse(this.x, this.y, rScale(500000));
-    ellipse(this.x, this.y, rScale(250000));
-    ellipse(this.x, this.y, rScale(750000));
+    ellipse(this.x, this.y, rScale(500000) * 2);
+    ellipse(this.x, this.y, rScale(250000) * 2);
   }
 
   drawEdge() {
