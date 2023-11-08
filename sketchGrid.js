@@ -96,8 +96,8 @@ function setup() {
 
 function draw() {
   textFont('Lato');
-  background('#000');
   noStroke();
+  noLoop();
   for (const c of uniqueCode) {
     const flower = flowers[month][c];
     flower.drawGrid();
@@ -113,6 +113,7 @@ function draw() {
     windowHeight - 40
   );
   month = month === 12 ? 1 : month + 1;
+  save(`seoul_${monthArray[month - 1]}.png`)
 }
 
 function rScale(d) {
