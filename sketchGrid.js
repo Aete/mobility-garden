@@ -2,9 +2,9 @@ const flowers = {};
 let cScale;
 const data_2022 = {};
 let notoFont;
-const windowWidth = 900;
-const windowHeight = 900;
-let month = 1;
+const windowWidth = 910;
+const windowHeight = 1170;
+let month = 8;
 const guCode = [
   { code: 11110, nameKR: 'Jongno-gu' },
   { code: 11140, nameKR: 'Jung-gu' },
@@ -73,8 +73,8 @@ function preload() {
       flowers[m] = {};
       for (let i = 0; i < uniqueCode.length; i++) {
         const flower = new Flower(
-          120 + (i % 5) * 160,
-          100 + Math.floor(i / 5) * 150,
+          120 + (i % 5) * 165,
+          100 + Math.floor(i / 5) * 190,
           data_2022[uniqueCode[i]][m],
           guCode.filter((d) => d['code'] === parseInt(uniqueCode[i]))[0][
             'nameKR'
@@ -89,13 +89,15 @@ function preload() {
 function setup() {
   // 캔버스 생성
   createCanvas(windowWidth, windowHeight);
-  cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
+  cScale = d3.scaleDiverging(d3.interpolateRdBu).domain([0.45, 0.5, 0.55]);
   textAlign(CENTER);
+  pixelDensity(2);
   frameRate(1.5);
 }
 
 function draw() {
   textFont('Lato');
+  background('#212121');
   noStroke();
   noLoop();
   for (const c of uniqueCode) {
@@ -106,14 +108,12 @@ function draw() {
     flower.drawText();
   }
   fill('#ccc');
-  textSize(25);
+  textSize(30);
   text(
     `Seoul, ${monthArray[month - 1]} 2022`,
     windowWidth / 2,
-    windowHeight - 40
+    windowHeight - 80
   );
-  month = month === 12 ? 1 : month + 1;
-  save(`seoul_${monthArray[month - 1]}.png`)
 }
 
 function rScale(d) {

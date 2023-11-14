@@ -3,15 +3,52 @@ let cScale;
 const data = {};
 const uniqueYear = ['2019', '2020'];
 let uniqueMonth;
+let uniqueCode;
+
+const guCode = [
+  { code: 11110, nameKR: 'Jongno-gu' },
+  { code: 11140, nameKR: 'Jung-gu' },
+  { code: 11170, nameKR: 'Yongsan-gu' },
+  { code: 11200, nameKR: 'Seongdong-gu' },
+  { code: 11215, nameKR: 'Gwangjin-gu' },
+  { code: 11230, nameKR: 'Dongdaemun-gu' },
+  { code: 11260, nameKR: 'Jungnang-gu' },
+  { code: 11290, nameKR: 'Seongbuk-gu' },
+  { code: 11305, nameKR: 'Gangbuk-gu' },
+  { code: 11320, nameKR: 'Dobong-gu' },
+  { code: 11350, nameKR: 'Nowon-gu' },
+  { code: 11380, nameKR: 'Eunpyeong-gu' },
+  { code: 11410, nameKR: 'Seodaemun-gu' },
+  { code: 11440, nameKR: 'Mapo-gu' },
+  { code: 11470, nameKR: 'Yangcheon-gu' },
+  { code: 11500, nameKR: 'Gangseo-gu' },
+  { code: 11530, nameKR: 'Guro-gu' },
+  { code: 11545, nameKR: 'Geumcheon-gu' },
+  { code: 11560, nameKR: 'Yeongdeungpo-gu' },
+  { code: 11590, nameKR: 'Dongjak-gu' },
+  { code: 11620, nameKR: 'Gwanak-gu' },
+  { code: 11650, nameKR: 'Seocho-gu' },
+  { code: 11680, nameKR: 'Gangnam-gu' },
+  { code: 11740, nameKR: 'Gangdong-gu' },
+  { code: 11710, nameKR: 'Songpa-gu' },
+];
 
 const xSpace = 200;
 const ySpace = 270;
 
-function preload() {
+function setXPos(a, m) {
+  return m * xSpace + a * xSpace * 12 + 350;
+}
+
+function setYPos(i) {
+  return 250 + i * ySpace;
+}
+
+async function getData() {
   // 데이터 기반의 객체 하나 만들기
-  d3.csv('./data/living_pop.csv').then((csv) => {
+  await d3.csv('./data/living_pop.csv').then((csv) => {
     // get unique region codes
-    const uniqueCode = csv
+    uniqueCode = csv
       .map((row) => row['자치구코드'])
       .filter((v, i, a) => a.indexOf(v) === i);
     uniqueMonth = csv
@@ -38,13 +75,12 @@ function preload() {
         }
       }
     }
-    console.log(data);
     for (let i = 0; i < uniqueCode.length; i++) {
       for (let a = 0; a < 2; a++) {
         for (let m = 1; m < 13; m++) {
           const flower = new Flower(
-            m * xSpace + a * xSpace * 12,
-            300 + i * ySpace,
+            setXPos(a, m),
+            setYPos(i),
             data[uniqueCode[i]][uniqueYear[a]][m]
           );
           flowers.push(flower);
@@ -56,17 +92,17 @@ function preload() {
 
 function setup() {
   // 캔버스 생성
-  createCanvas(5000, 7000);
+  createCanvas(5500, 7000);
   cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
-  pixelDensity(1);
-  textAlign(CENTER);
+  pixelDensity(2);
 }
 
-function draw() {
-  background('#000');
-
-  createMonthGrid();
+async function draw() {
   noLoop();
+  await getData();
+  createMonthGrid();
+  createGuGrid();
+
   noStroke();
   for (const f of flowers) {
     f.drawGrid();
@@ -78,25 +114,38 @@ function draw() {
 function createMonthGrid() {
   for (let a = 0; a < 2; a++) {
     for (let m = 1; m < 13; m++) {
-      const xPos = m * xSpace + a * xSpace * 12;
+      const xPos = setXPos(a, m);
       stroke('#333');
-      drawLine(xPos, 150, xPos, 6900);
+      drawLine(xPos, 150, xPos, 6850);
       noStroke();
-      fill('#aaa');
-      textSize(25);
+      fill('#ccc');
+      textSize(30);
+      textAlign(CENTER);
       text(`${uniqueYear[a]}.${m > 9 ? m : '0' + m}`, xPos, 120);
+      text(`${uniqueYear[a]}.${m > 9 ? m : '0' + m}`, xPos, 6900);
     }
   }
 }
 
-function createGuGrid(index) {
-  const yPos = month * 180;
-  stroke('#424242');
-  drawLine(100, yPos, 2600, yPos);
+function createGuGrid() {
+  for (let i = 0; i < uniqueCode.length; i++) {
+    const yPos = setYPos(i);
+    stroke('#333');
+    drawLine(350, yPos, 5500, yPos);
+    textSize(40);
+    textAlign(RIGHT);
+    text(
+      `${
+        guCode.filter((d) => d['code'] === parseInt(uniqueCode[i]))[0]['nameKR']
+      }`,
+      350,
+      yPos + 10
+    );
+  }
 }
 
 function rScale(d) {
-  return d * 0.0001;
+  return d * 0.00012;
 }
 
 function drawPoint(x, y, r) {
@@ -129,7 +178,7 @@ class Flower {
 
   drawCenter() {
     noStroke();
-    fill('#fff');
+    fill('#eee');
     ellipse(this.x, this.y, 8);
   }
 

@@ -2,6 +2,7 @@ const flowers = [];
 let cScale;
 const data_2022 = {};
 let notoFont;
+let uniqueCode;
 
 const monthArray = [
   'Jan',
@@ -15,8 +16,8 @@ const monthArray = [
   'Sept',
   'Oct',
   'Nov',
-  'Dec'
-]
+  'Dec',
+];
 
 const guCode = [
   { code: 11110, nameKR: 'Jongno-gu' },
@@ -50,7 +51,7 @@ function preload() {
   // 데이터 기반의 객체 하나 만들기
   d3.csv('./data/2022_monthly.csv').then((csv) => {
     // get unique region codes
-    const uniqueCode = csv
+    uniqueCode = csv
       .map((row) => row['자치구코드'])
       .filter((v, i, a) => a.indexOf(v) === i);
     const uniqueMonth = csv
@@ -72,10 +73,10 @@ function preload() {
     for (let i = 0; i < uniqueCode.length; i++) {
       for (let m = 1; m < 13; m++) {
         const flower = new Flower(
-          150 + ((m-1) % 3) * 250,
-          100 + Math.floor((m-1) / 3) * 200,
+          150 + ((m - 1) % 3) * 305,
+          150 + Math.floor((m - 1) / 3) * 250,
           data_2022[uniqueCode[i]][m],
-          monthArray[m-1],
+          monthArray[m - 1],
           guCode.filter((d) => d['code'] === parseInt(uniqueCode[i]))[0][
             'nameKR'
           ]
@@ -88,24 +89,33 @@ function preload() {
 
 function setup() {
   // 캔버스 생성
-  createCanvas(800, 920);
+  createCanvas(910, 1170);
   cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
   textAlign(CENTER);
 }
 
 function draw() {
-  textFont('Noto Serif');
+  textFont('Lato');
   noStroke();
   noLoop();
   const index = Math.floor(Math.random() * 25);
-  console.log(index);
-  background('#000');
-  for (const f of flowers.slice(0 + index*12, index*12 + 12)) {
+  background('#212121');
+  for (const f of flowers.slice(0 + index * 12, index * 12 + 12)) {
     f.drawGrid();
     f.drawEdge();
     f.drawCenter();
     f.drawText();
   }
+  textSize(30);
+  text(
+    `${
+      guCode.filter((data) => data.code === parseInt(uniqueCode[index]))[0][
+        'nameKR'
+      ]
+    }, 2022`,
+    0.5 * 910,
+    1170 - 50
+  );
 }
 
 function rScale(d) {
@@ -118,7 +128,7 @@ class Flower {
     this.y = y;
     this.data = data;
     this.color = 'fff';
-    this.month = month
+    this.month = month;
     this.gu = gu;
   }
 
@@ -184,8 +194,6 @@ class Flower {
       text(this.month, this.x, this.y + rScale(500000) + 20);
     }
     fill('#ccc');
-    textSize(30);
-    text(`${this.gu}, 2022`, 400, 880);
   }
 }
 
