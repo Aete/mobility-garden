@@ -95,9 +95,10 @@ function setup() {
   createCanvas(5500, 7000);
   cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
   pixelDensity(2);
+  background('#212121');
 }
 
-async function draw() {
+async function draw(){
   noLoop();
   await getData();
   createMonthGrid();
