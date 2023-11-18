@@ -4,7 +4,7 @@ const data_2022 = {};
 let notoFont;
 const windowWidth = 910;
 const windowHeight = 1170;
-let month = 1;
+let month = 11;
 
 const guCode = [
   { code: 11110, nameKR: 'Jongno-gu', x: 126.9773213,  y: 37.59491732},
@@ -102,6 +102,7 @@ function setup() {
 
 function draw() {
   background('#212121');
+  noLoop();
   noStroke();
   for (const c of uniqueCode) {
     const flower = flowers[month][c];
