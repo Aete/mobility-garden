@@ -1,7 +1,7 @@
 const flowers = [];
 let cScale;
 const data = {};
-const uniqueYear = ['2019', '2020'];
+const uniqueYear = ['2021', '2022'];
 let uniqueMonth;
 let uniqueCode;
 
@@ -33,15 +33,30 @@ const guCode = [
   { code: 11710, nameKR: 'Songpa-gu' },
 ];
 
-const xSpace = 200;
-const ySpace = 270;
+const monthArray = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'June',
+  'July',
+  'Aug',
+  'Sept',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+const xSpace = 160;
+const ySpace = 250;
 
 function setXPos(a, m) {
-  return m * xSpace + a * xSpace * 12 + 350;
+  return m * xSpace + a * xSpace * 12;
 }
 
 function setYPos(i) {
-  return 250 + i * ySpace;
+  return 500 + i * ySpace;
 }
 
 async function getData() {
@@ -98,7 +113,7 @@ function setup() {
   background('#212121');
 }
 
-async function draw(){
+async function draw() {
   noLoop();
   await getData();
   createMonthGrid();
@@ -116,14 +131,14 @@ function createMonthGrid() {
   for (let a = 0; a < 2; a++) {
     for (let m = 1; m < 13; m++) {
       const xPos = setXPos(a, m);
-      stroke('#333');
-      drawLine(xPos, 150, xPos, 6850);
+      stroke('#636363');
+      drawLine(xPos, 370, xPos, 6650);
       noStroke();
       fill('#ccc');
-      textSize(30);
+      textSize(70);
       textAlign(CENTER);
-      text(`${uniqueYear[a]}.${m > 9 ? m : '0' + m}`, xPos, 120);
-      text(`${uniqueYear[a]}.${m > 9 ? m : '0' + m}`, xPos, 6900);
+      text(monthArray[m - 1], xPos, 320);
+      text(monthArray[m - 1], xPos, 6700);
     }
   }
 }
@@ -131,22 +146,22 @@ function createMonthGrid() {
 function createGuGrid() {
   for (let i = 0; i < uniqueCode.length; i++) {
     const yPos = setYPos(i);
-    stroke('#333');
-    drawLine(350, yPos, 5500, yPos);
-    textSize(40);
-    textAlign(RIGHT);
+    stroke('#636363');
+    drawLine(0, yPos, 4000, yPos);
+    textSize(90);
+    textAlign(LEFT);
     text(
       `${
         guCode.filter((d) => d['code'] === parseInt(uniqueCode[i]))[0]['nameKR']
       }`,
-      350,
-      yPos + 10
+      4050,
+      yPos + 40
     );
   }
 }
 
 function rScale(d) {
-  return d * 0.00012;
+  return d * 0.00008;
 }
 
 function drawPoint(x, y, r) {
@@ -179,7 +194,7 @@ class Flower {
 
   drawCenter() {
     noStroke();
-    fill('#eee');
+    fill('#fff');
     ellipse(this.x, this.y, 8);
   }
 

@@ -6,42 +6,57 @@ let uniqueMonth;
 let uniqueCode;
 
 const guCode = [
-  { code: 11110, nameKR: 'Jongno-gu' },
-  { code: 11140, nameKR: 'Jung-gu' },
-  { code: 11170, nameKR: 'Yongsan-gu' },
-  { code: 11200, nameKR: 'Seongdong-gu' },
-  { code: 11215, nameKR: 'Gwangjin-gu' },
-  { code: 11230, nameKR: 'Dongdaemun-gu' },
-  { code: 11260, nameKR: 'Jungnang-gu' },
-  { code: 11290, nameKR: 'Seongbuk-gu' },
-  { code: 11305, nameKR: 'Gangbuk-gu' },
-  { code: 11320, nameKR: 'Dobong-gu' },
-  { code: 11350, nameKR: 'Nowon-gu' },
-  { code: 11380, nameKR: 'Eunpyeong-gu' },
-  { code: 11410, nameKR: 'Seodaemun-gu' },
-  { code: 11440, nameKR: 'Mapo-gu' },
-  { code: 11470, nameKR: 'Yangcheon-gu' },
-  { code: 11500, nameKR: 'Gangseo-gu' },
-  { code: 11530, nameKR: 'Guro-gu' },
-  { code: 11545, nameKR: 'Geumcheon-gu' },
-  { code: 11560, nameKR: 'Yeongdeungpo-gu' },
-  { code: 11590, nameKR: 'Dongjak-gu' },
-  { code: 11620, nameKR: 'Gwanak-gu' },
-  { code: 11650, nameKR: 'Seocho-gu' },
-  { code: 11680, nameKR: 'Gangnam-gu' },
-  { code: 11740, nameKR: 'Gangdong-gu' },
-  { code: 11710, nameKR: 'Songpa-gu' },
+  { code: 11110, nameKR: 'Jongno-gu', x: 126.9773213, y: 37.59491732 },
+  { code: 11140, nameKR: 'Jung-gu', x: 126.9959681, y: 37.56014356 },
+  { code: 11170, nameKR: 'Yongsan-gu', x: 126.979907, y: 37.53138497 },
+  { code: 11200, nameKR: 'Seongdong-gu', x: 127.0410585, y: 37.55102969 },
+  { code: 11215, nameKR: 'Gwangjin-gu', x: 127.0857435, y: 37.54670608 },
+  { code: 11230, nameKR: 'Dongdaemun-gu', x: 127.0548481, y: 37.58195655 },
+  { code: 11260, nameKR: 'Jungnang-gu', x: 127.0928803, y: 37.59780259 },
+  { code: 11290, nameKR: 'Seongbuk-gu', x: 127.017579, y: 37.6057019 },
+  { code: 11305, nameKR: 'Gangbuk-gu', x: 127.011189, y: 37.64347391 },
+  { code: 11320, nameKR: 'Dobong-gu', x: 127.0323688, y: 37.66910208 },
+  { code: 11350, nameKR: 'Nowon-gu', x: 127.0750347, y: 37.65251105 },
+  { code: 11380, nameKR: 'Eunpyeong-gu', x: 126.9270229, y: 37.61921128 },
+  { code: 11410, nameKR: 'Seodaemun-gu', x: 126.9390631, y: 37.57778531 },
+  { code: 11440, nameKR: 'Mapo-gu', x: 126.90827, y: 37.55931349 },
+  { code: 11470, nameKR: 'Yangcheon-gu', x: 126.8554777, y: 37.52478941 },
+  { code: 11500, nameKR: 'Gangseo-gu', x: 126.822807, y: 37.56123543 },
+  { code: 11530, nameKR: 'Guro-gu', x: 126.8563006, y: 37.49440543 },
+  { code: 11545, nameKR: 'Geumcheon-gu', x: 126.9008202, y: 37.46056756 },
+  { code: 11560, nameKR: 'Yeongdeungpo-gu', x: 126.9101695, y: 37.52230829 },
+  { code: 11590, nameKR: 'Dongjak-gu', x: 126.9516415, y: 37.49887688 },
+  { code: 11620, nameKR: 'Gwanak-gu', x: 126.9453372, y: 37.46737569 },
+  { code: 11650, nameKR: 'Seocho-gu', x: 127.0312203, y: 37.47329547 },
+  { code: 11680, nameKR: 'Gangnam-gu', x: 127.0629852, y: 37.49664389 },
+  { code: 11740, nameKR: 'Gangdong-gu', x: 127.115295, y: 37.50561924 },
+  { code: 11710, nameKR: 'Songpa-gu', x: 127.1470118, y: 37.55045024 },
 ];
 
-const xSpace = 200;
-const ySpace = 270;
+const monthArray = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'June',
+  'July',
+  'Aug',
+  'Sept',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+const xSpace = 160;
+const ySpace = 250;
 
 function setXPos(a, m) {
-  return m * xSpace + a * xSpace * 12;
+  return m * xSpace + a * xSpace * 12 + 1200;
 }
 
 function setYPos(i) {
-  return 250 + i * ySpace;
+  return 300 + i * ySpace;
 }
 
 async function getData() {
@@ -75,12 +90,23 @@ async function getData() {
         }
       }
     }
+
+    const projection = d3
+      .geoMercator()
+      .center([126.9895, 37.5651])
+      .scale(200000)
+      .translate([0, 0]);
     for (let i = 0; i < uniqueCode.length; i++) {
       for (let a = 0; a < 2; a++) {
-        for (let m = 1; m < 13; m++) {
+        for (let j = 0; j < 4; j++) {
+          const gu = guCode.filter(
+            (d) => d.code === parseInt(uniqueCode[i])
+          )[0];
+          const m = [3, 6, 9, 12][j];
+          const coord = projection([gu.x, gu.y]);
           const flower = new Flower(
-            setXPos(a, m),
-            setYPos(i),
+            coord[0] + a * 2500 + 1200,
+            coord[1] + j * 1500 + 1250,
             data[uniqueCode[i]][uniqueYear[a]][m]
           );
           flowers.push(flower);
@@ -95,13 +121,14 @@ function setup() {
   createCanvas(5500, 7000);
   cScale = d3.scaleDiverging(d3.interpolateRdYlBu).domain([0.45, 0.5, 0.55]);
   pixelDensity(2);
+  background('#212121');
 }
 
 async function draw() {
   noLoop();
   await getData();
+  createYearGrid();
   createMonthGrid();
-  createGuGrid();
 
   noStroke();
   for (const f of flowers) {
@@ -111,41 +138,34 @@ async function draw() {
   }
 }
 
-function createMonthGrid() {
+function createYearGrid() {
   for (let a = 0; a < 2; a++) {
-    for (let m = 1; m < 13; m++) {
-      const xPos = setXPos(a, m);
-      stroke('#333');
-      drawLine(xPos, 150, xPos, 6850);
-      noStroke();
-      fill('#ccc');
-      textSize(30);
-      textAlign(CENTER);
-      text(`${uniqueYear[a]}.${m > 9 ? m : '0' + m}`, xPos, 120);
-      text(`${uniqueYear[a]}.${m > 9 ? m : '0' + m}`, xPos, 6900);
-    }
+    const xPos = a * 2500 + 1200;
+    stroke('#636363');
+    drawLine(xPos, 370, xPos, 6650);
+    noStroke();
+    fill('#ccc');
+    textSize(180);
+    textAlign(CENTER);
+    text(uniqueYear[a], xPos, 320);
+    text(uniqueYear[a], xPos, 6750);
   }
 }
 
-function createGuGrid() {
-  for (let i = 0; i < uniqueCode.length; i++) {
-    const yPos = setYPos(i);
-    stroke('#333');
-    drawLine(0, yPos, 4950, yPos);
-    textSize(40);
-    textAlign(LEFT);
-    text(
-      `${
-        guCode.filter((d) => d['code'] === parseInt(uniqueCode[i]))[0]['nameKR']
-      }`,
-      5000,
-      yPos + 10
-    );
+function createMonthGrid() {
+  for (let j = 0; j < 4; j++) {
+    const yPos = j * 1500 + 1250;
+    const m = [3, 6, 9, 12][j];
+    stroke('#636363');
+    drawLine(0, yPos, 4600, yPos);
+    textSize(180);
+    textAlign(RIGHT);
+    text(monthArray[m - 1], 5000, yPos + 40);
   }
 }
 
 function rScale(d) {
-  return d * 0.00012;
+  return d * 0.00016;
 }
 
 function drawPoint(x, y, r) {
@@ -178,7 +198,7 @@ class Flower {
 
   drawCenter() {
     noStroke();
-    fill('#fff');
+    fill('#eee');
     ellipse(this.x, this.y, 8);
   }
 
