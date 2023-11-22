@@ -1,5 +1,14 @@
 const flowers = {};
 
+function updateFlowers() {
+  background('#212121');
+  for (const c of uniqueCode) {
+    const flower = flowers[c][[year]][month];
+    flower.drawEdge();
+    flower.drawCenter();
+  }
+}
+
 class Flower {
   constructor(x, y, data, gu, rRatio) {
     this.x = x;
