@@ -56,7 +56,7 @@ function visualizeText() {
 function createPlayButton() {
   button = createButton('Stop');
   button.position(125, 30);
-  button.style('font-size', '30px');
+  button.style('font-size', '20px');
   button.style('color','#212121');
   button.style('height', '40px');
   button.style('width', '80px');
