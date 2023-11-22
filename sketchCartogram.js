@@ -41,7 +41,7 @@ function visualizeText() {
   text(
     `Seoul, ${monthArray[month - 1]} ${year}`,
     windowWidth / 2,
-    windowHeight - 100
+    windowHeight - 200
   );
   if (playMode === true) {
     if (month === 12) {
@@ -55,11 +55,12 @@ function visualizeText() {
 
 function createPlayButton() {
   button = createButton('⏸');
-  button.position(75, 75);
-  button.style('font-size', '60px');
-  button.style('height', '80px');
+  button.position(125, 30);
+  button.style('font-size', '30px');
+  button.style('color','#212121');
+  button.style('height', '40px');
   button.style('width', '80px');
-  button.style('line-height', '40px');
+  button.style('line-height', '20px');
   button.style('background', '#fff');
   button.style('border-radius', '40px');
 
@@ -78,10 +79,11 @@ function toggleButton() {
 
 function createYearMenu() {
   yearSelect = createSelect();
-  yearSelect.position(220, 75);
-  yearSelect.style('font-size', '30px');
-  yearSelect.style('padding-left', '20px');
-  yearSelect.style('height', '80px');
+  yearSelect.position(250, 30);
+  yearSelect.style('font-size', '20px');
+  yearSelect.style('color','#212121');
+  yearSelect.style('padding-left', '40px');
+  yearSelect.style('height', '40px');
   yearSelect.style('width', '150px');
   yearSelect.style('line-height', '40px');
   yearSelect.style('background', '#fff');
@@ -103,10 +105,11 @@ function yearChanged() {
 
 function createMonthMenu() {
   monthSelect = createSelect();
-  monthSelect.position(400, 75);
-  monthSelect.style('font-size', '30px');
+  monthSelect.position(430, 30);
+  monthSelect.style('font-size', '20px');
+  monthSelect.style('color','#212121');
   monthSelect.style('padding-left', '20px');
-  monthSelect.style('height', '80px');
+  monthSelect.style('height', '40px');
   monthSelect.style('width', '150px');
   monthSelect.style('line-height', '40px');
   monthSelect.style('background', '#fff');
@@ -136,10 +139,11 @@ function monthChanged() {
 
 function createModeMenu() {
   modeSelect = createSelect();
-  modeSelect.position(670, 75);
-  modeSelect.style('font-size', '30px');
+  modeSelect.position(630, 30);
+  modeSelect.style('font-size', '20px');
+  modeSelect.style('color','#212121');
   modeSelect.style('padding-left', '20px');
-  modeSelect.style('height', '80px');
+  modeSelect.style('height', '40px');
   modeSelect.style('width', '250px');
   modeSelect.style('line-height', '40px');
   modeSelect.style('background', '#fff');

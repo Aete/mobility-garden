@@ -96,7 +96,7 @@ function preload() {
             data[code][year][m],
             gu['nameKR'],
             170 + (i % 5) * 165,
-            260 + Math.floor(i / 5) * 190
+            160 + Math.floor(i / 5) * 190
           );
           flowers[code][year][m] = flower;
         }
