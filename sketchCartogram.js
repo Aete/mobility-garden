@@ -55,7 +55,7 @@ function visualizeText() {
 
 function createPlayButton() {
   button = createButton('Stop');
-  button.position(125, 30);
+  button.position(125, 60);
   button.style('font-size', '20px');
   button.style('color','#212121');
   button.style('height', '40px');
@@ -79,7 +79,7 @@ function toggleButton() {
 
 function createYearMenu() {
   yearSelect = createSelect();
-  yearSelect.position(250, 30);
+  yearSelect.position(250, 60);
   yearSelect.style('font-size', '20px');
   yearSelect.style('color','#212121');
   yearSelect.style('padding-left', '40px');
@@ -105,7 +105,7 @@ function yearChanged() {
 
 function createMonthMenu() {
   monthSelect = createSelect();
-  monthSelect.position(430, 30);
+  monthSelect.position(430, 60);
   monthSelect.style('font-size', '20px');
   monthSelect.style('color','#212121');
   monthSelect.style('padding-left', '20px');
@@ -139,7 +139,7 @@ function monthChanged() {
 
 function createModeMenu() {
   modeSelect = createSelect();
-  modeSelect.position(630, 30);
+  modeSelect.position(630, 60);
   modeSelect.style('font-size', '20px');
   modeSelect.style('color','#212121');
   modeSelect.style('padding-left', '20px');
