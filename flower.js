@@ -8,6 +8,7 @@ function updateFlowers(mode) {
     flower.drawCenter();
     if (mode === 'Grid') {
       flower.drawText();
+      flower.drawGrid();
     }
   }
 }

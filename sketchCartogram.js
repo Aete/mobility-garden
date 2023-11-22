@@ -36,7 +36,7 @@ function draw() {
 }
 
 function visualizeText() {
-  fill('#ccc');
+  fill('#fff');
   textSize(60);
   text(
     `Seoul, ${monthArray[month - 1]} ${year}`,
