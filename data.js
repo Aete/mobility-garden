@@ -82,7 +82,8 @@ function preload() {
       .scale(110000)
       .translate([windowWidth / 2, windowHeight / 2 - 50]);
 
-    for (const code of uniqueCode) {
+    for (let i = 0; i < uniqueCode.length; i++) {
+      const code = uniqueCode[i];
       flowers[code] = {};
       for (const year of uniqueYear) {
         flowers[code][year] = {};
@@ -93,7 +94,9 @@ function preload() {
             coord[0],
             coord[1],
             data[code][year][m],
-            gu['nameKR']
+            gu['nameKR'],
+            170 + (i % 5) * 165,
+            260 + Math.floor(i / 5) * 190
           );
           flowers[code][year][m] = flower;
         }

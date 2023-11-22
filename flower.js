@@ -1,22 +1,39 @@
 const flowers = {};
 
-function updateFlowers() {
-  background('#212121');
+function updateFlowers(mode) {
   for (const c of uniqueCode) {
     const flower = flowers[c][[year]][month];
+    flower.toggleGridMode(mode);
     flower.drawEdge();
     flower.drawCenter();
+    if (mode === 'Grid') {
+      flower.drawText();
+    }
   }
 }
 
 class Flower {
-  constructor(x, y, data, gu, rRatio) {
-    this.x = x;
-    this.y = y;
+  constructor(coordX, coordY, data, gu, gridX, gridY) {
+    this.coordX = coordX;
+    this.coordY = coordY;
+    this.gridX = gridX;
+    this.gridY = gridY;
+    this.x = coordX;
+    this.y = coordY;
     this.data = data;
     this.color = 'fff';
     this.gu = gu;
     this.rRatio = 0.0001;
+  }
+
+  toggleGridMode(mode) {
+    if (mode === 'Grid') {
+      this.x = this.gridX;
+      this.y = this.gridY;
+    } else {
+      this.x = this.coordX;
+      this.y = this.coordY;
+    }
   }
 
   rScale(d) {

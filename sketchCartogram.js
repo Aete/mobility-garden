@@ -7,9 +7,11 @@ let year = 2019;
 let month = 1;
 let button;
 let playMode = true;
+let mode = 'Geography';
 
 let yearSelect;
 let monthSelect;
+let modeSelect;
 
 function setup() {
   // 캔버스 생성
@@ -21,19 +23,25 @@ function setup() {
   createPlayButton();
   createYearMenu();
   createMonthMenu();
+  createModeMenu();
 }
 
 function draw() {
   noStroke();
   yearSelect.selected(year);
   monthSelect.selected(month);
-  updateFlowers();
+  background('#212121');
+  visualizeText();
+  updateFlowers(mode);
+}
+
+function visualizeText() {
   fill('#ccc');
   textSize(60);
   text(
     `Seoul, ${monthArray[month - 1]} ${year}`,
     windowWidth / 2,
-    windowHeight - 200
+    windowHeight - 100
   );
   if (playMode === true) {
     if (month === 12) {
@@ -47,7 +55,7 @@ function draw() {
 
 function createPlayButton() {
   button = createButton('⏸');
-  button.position(50, 50);
+  button.position(75, 75);
   button.style('font-size', '60px');
   button.style('height', '80px');
   button.style('width', '80px');
@@ -70,7 +78,7 @@ function toggleButton() {
 
 function createYearMenu() {
   yearSelect = createSelect();
-  yearSelect.position(200, 50);
+  yearSelect.position(220, 75);
   yearSelect.style('font-size', '30px');
   yearSelect.style('padding-left', '20px');
   yearSelect.style('height', '80px');
@@ -88,12 +96,14 @@ function createYearMenu() {
 
 function yearChanged() {
   year = yearSelect.value();
-  updateFlowers();
+  background('#212121');
+  updateFlowers(mode);
+  visualizeText();
 }
 
 function createMonthMenu() {
   monthSelect = createSelect();
-  monthSelect.position(400, 50);
+  monthSelect.position(400, 75);
   monthSelect.style('font-size', '30px');
   monthSelect.style('padding-left', '20px');
   monthSelect.style('height', '80px');
@@ -119,5 +129,30 @@ function createMonthMenu() {
 
 function monthChanged() {
   month = monthSelect.value();
-  updateFlowers();
+  background('#212121');
+  updateFlowers(mode);
+  visualizeText();
+}
+
+function createModeMenu() {
+  modeSelect = createSelect();
+  modeSelect.position(670, 75);
+  modeSelect.style('font-size', '30px');
+  modeSelect.style('padding-left', '20px');
+  modeSelect.style('height', '80px');
+  modeSelect.style('width', '250px');
+  modeSelect.style('line-height', '40px');
+  modeSelect.style('background', '#fff');
+  modeSelect.style('border-radius', '40px');
+  modeSelect.option('Geography');
+  modeSelect.option('Grid');
+  modeSelect.selected(mode);
+  modeSelect.changed(modeChanged);
+}
+
+function modeChanged() {
+  mode = modeSelect.value();
+  background('#212121');
+  updateFlowers(mode);
+  visualizeText();
 }
