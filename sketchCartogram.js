@@ -54,7 +54,7 @@ function visualizeText() {
 }
 
 function createPlayButton() {
-  button = createButton('⏸');
+  button = createButton('Stop');
   button.position(125, 30);
   button.style('font-size', '30px');
   button.style('color','#212121');
@@ -70,10 +70,10 @@ function createPlayButton() {
 function toggleButton() {
   if (playMode !== true) {
     playMode = true;
-    button.html('⏸');
+    button.html('Stop');
   } else {
     playMode = false;
-    button.html('⏵');
+    button.html('Play');
   }
 }
 
