@@ -95,7 +95,7 @@ function preload() {
             coord[1],
             data[code][year][m],
             gu['nameKR'],
-            170 + (i % 5) * 165,
+            220 + (i % 5) * 165,
             160 + Math.floor(i / 5) * 190
           );
           flowers[code][year][m] = flower;
